@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "GmFrY7cFJO6oj0kx/dMSlXmyCiH4sfEV2ItvSfhJg1Q=",
+  "Source": "EcommercePOC",
+  "BasePath": "_content/EcommercePOC",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}
