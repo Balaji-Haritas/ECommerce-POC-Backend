@@ -514,3 +514,4 @@ C:\POC\EcommercePOC\EcommercePOC\obj\Debug\net8.0\refint\EcommercePOC.dll
 C:\POC\EcommercePOC\EcommercePOC\obj\Debug\net8.0\EcommercePOC.pdb
 C:\POC\EcommercePOC\EcommercePOC\obj\Debug\net8.0\EcommercePOC.genruntimeconfig.cache
 C:\POC\EcommercePOC\EcommercePOC\obj\Debug\net8.0\ref\EcommercePOC.dll
+C:\POC\EcommercePOC\EcommercePOC\obj\Debug\net8.0\EcommercePOC.sourcelink.json

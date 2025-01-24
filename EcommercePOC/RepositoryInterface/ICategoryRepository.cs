@@ -8,6 +8,7 @@ namespace EcommercePOC.RepositoryInterface
         Task<Category> GetCategoryByIdAsync(int id);
         //Task<Category>GetCategoryByNameAsync(string name);
         Task AddCategoryAsync(Category category);
+        Task<IEnumerable<Product>> GetProductsByCategoryIdAsync(int categoryId);
         Task SaveAsync();
 
 

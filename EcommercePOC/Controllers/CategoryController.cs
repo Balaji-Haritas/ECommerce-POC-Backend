@@ -54,5 +54,17 @@ namespace EcommercePOC.Controllers
             return CreatedAtAction(nameof(GetCategories),new {id = category.CategoryId},category);
         }
 
+        [HttpGet("{id}/products")]
+        public async Task<ActionResult<IEnumerable<Product>>> GetProductsByCategoryId(int id)
+        {
+            var products = await CategoryRepository.GetProductsByCategoryIdAsync(id);
+
+            if (products == null || !products.Any())
+            {
+                return NotFound();
+            }
+            return Ok(products);
+        }
+
     }
 }

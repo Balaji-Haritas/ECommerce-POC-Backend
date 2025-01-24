@@ -35,6 +35,11 @@ namespace EcommercePOC.Repository
         //    return await _dbContext.Categories.FirstOrDefaultAsync(c => c.CategoryName == name);
         //}
 
+        public async Task<IEnumerable<Product>> GetProductsByCategoryIdAsync(int categoryId)
+        {
+            return await _dbContext.Products.Include(c => c.Category).Where(p => p.CategoryId == categoryId).ToListAsync();
+        }
+
         public async Task SaveAsync()
         {
            await _dbContext.SaveChangesAsync();

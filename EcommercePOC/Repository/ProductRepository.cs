@@ -26,7 +26,17 @@ namespace EcommercePOC.Repository
 
         public async Task<IEnumerable<Product>> GetProductsAsync()
         {
-            return await _dbContext.Products.Include(p => p.Category).ToListAsync();   
+            return await (from p in _dbContext.Products
+                          join c in _dbContext.Categories on p.CategoryId equals c.CategoryId
+                          select new Product
+                          {
+                              Id = p.Id,
+                              Name = p.Name,
+                              Category = c,
+                              Price = p.Price,
+                              Description = p.Description,
+                              CategoryId = p.CategoryId
+                          }).ToListAsync();
         }
 
         public async Task<IEnumerable<Product>> GetProductsByCategoryNameAsync(string categoryName) 
