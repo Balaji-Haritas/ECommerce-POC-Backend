@@ -15,6 +15,7 @@ namespace EcommercePOC.Controllers
             CategoryRepository = categoryRepository;
         }
 
+        // GET: api/Category
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
         {
@@ -22,6 +23,7 @@ namespace EcommercePOC.Controllers
             return Ok(categories);
         }
 
+        // GET: api/Category/{id}
         [HttpGet("{id}")]
         public async Task<ActionResult<Category>> GetCategoryById(int id)
         {
@@ -45,8 +47,8 @@ namespace EcommercePOC.Controllers
         //    return Ok(category);
         //}
 
+        // POST: api/Category
         [HttpPost]
-
         public async Task<ActionResult<Category>> AddCategory(Category category)
         {
             await CategoryRepository.AddCategoryAsync(category);
@@ -54,6 +56,7 @@ namespace EcommercePOC.Controllers
             return CreatedAtAction(nameof(GetCategories),new {id = category.CategoryId},category);
         }
 
+        // GET: api/Category/{id}/products
         [HttpGet("{id}/products")]
         public async Task<ActionResult<IEnumerable<Product>>> GetProductsByCategoryId(int id)
         {
