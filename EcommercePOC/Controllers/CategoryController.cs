@@ -1,5 +1,6 @@
 ﻿using EcommercePOC.Models;
 using EcommercePOC.RepositoryInterface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EcommercePOC.Controllers
@@ -16,6 +17,7 @@ namespace EcommercePOC.Controllers
         }
 
         // GET: api/Category
+        //[Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
         {
@@ -47,15 +49,6 @@ namespace EcommercePOC.Controllers
         //    return Ok(category);
         //}
 
-        // POST: api/Category
-        [HttpPost]
-        public async Task<ActionResult<Category>> AddCategory(Category category)
-        {
-            await CategoryRepository.AddCategoryAsync(category);
-            await CategoryRepository.SaveAsync();
-            return CreatedAtAction(nameof(GetCategories),new {id = category.CategoryId},category);
-        }
-
         // GET: api/Category/{id}/products
         [HttpGet("{id}/products")]
         public async Task<ActionResult<IEnumerable<Product>>> GetProductsByCategoryId(int id)
@@ -67,6 +60,24 @@ namespace EcommercePOC.Controllers
                 return NotFound();
             }
             return Ok(products);
+        }
+
+        // POST: api/Category
+        [HttpPost]
+        public async Task<ActionResult<Category>> AddCategory(Category category)
+        {
+            await CategoryRepository.AddCategoryAsync(category);
+            await CategoryRepository.SaveAsync();
+            return CreatedAtAction(nameof(GetCategories),new {id = category.CategoryId},category);
+        }
+
+        //Delete:api/Category/{id}
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteCategory(int id)
+        {
+            await CategoryRepository.DeleteCategoryAsync(id);
+            await CategoryRepository.SaveAsync();
+            return NoContent();
         }
 
     }

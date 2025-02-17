@@ -1,4 +1,5 @@
 ﻿using EcommercePOC.DataAccess;
+using EcommercePOC.DTO;
 using EcommercePOC.Models;
 using EcommercePOC.RepositoryInterface;
 using Microsoft.EntityFrameworkCore;
@@ -14,16 +15,6 @@ namespace EcommercePOC.Repository
             _dbContext = dbContext;
         }
 
-        public async Task AddProductAsync(Product product)
-        {
-            await _dbContext.Products.AddAsync(product);
-        }
-
-        public async Task<Product> GetProductByIdAsync(int id)
-        {
-            return await _dbContext.Products.Include(p => p.Category).FirstOrDefaultAsync(p=> p.Id == id);
-        }
-
         public async Task<IEnumerable<Product>> GetProductsAsync()
         {
             return await (from p in _dbContext.Products
@@ -35,8 +26,15 @@ namespace EcommercePOC.Repository
                               Category = c,
                               Price = p.Price,
                               Description = p.Description,
-                              CategoryId = p.CategoryId
+                              CategoryId = p.CategoryId,
+                              Quantity = p.Quantity,
+                              ImageUrl = p.ImageUrl,
                           }).ToListAsync();
+        }
+
+        public async Task<Product> GetProductByIdAsync(int id)
+        {
+            return await _dbContext.Products.Include(p => p.Category).FirstOrDefaultAsync(p=> p.Id == id);
         }
 
         public async Task<IEnumerable<Product>> GetProductsByCategoryNameAsync(string categoryName) 
@@ -45,6 +43,34 @@ namespace EcommercePOC.Repository
                 .Include(p => p.Category)
                 .Where(p => p.Category.CategoryName == categoryName)
                 .ToListAsync();
+        }
+
+        public async Task AddProductAsync(Product product)
+        {
+            await _dbContext.Products.AddAsync(product);
+        }
+
+        public async Task UpdateProductAsync(ProductDTO product)
+        {
+            var existingProduct = await _dbContext.Products.FirstOrDefaultAsync(p => p.Id == product.Id);
+            if (existingProduct != null) 
+            {
+                existingProduct.Name = product.Name;
+                existingProduct.Description = product.Description;
+                existingProduct.Price = product.Price;
+                existingProduct.Quantity = product.Quantity;
+                existingProduct.ImageUrl = product.ImageUrl;
+            }
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task DeleteProductAsync(int id)
+        {
+            var product = await _dbContext.Products.FindAsync(id);
+            if (product != null)
+            {
+                _dbContext.Products.Remove(product);
+            }
         }
 
         public async Task SaveAsync()

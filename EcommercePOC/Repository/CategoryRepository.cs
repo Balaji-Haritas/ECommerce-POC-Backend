@@ -15,10 +15,6 @@ namespace EcommercePOC.Repository
             _dbContext = dbContext;
         }
 
-        public async Task AddCategoryAsync(Category category)
-        {
-            await _dbContext.Categories.AddAsync(category);
-        }
 
         public async Task<IEnumerable<Category>> GetCategoriesAsync()
         {
@@ -38,6 +34,20 @@ namespace EcommercePOC.Repository
         public async Task<IEnumerable<Product>> GetProductsByCategoryIdAsync(int categoryId)
         {
             return await _dbContext.Products.Include(c => c.Category).Where(p => p.CategoryId == categoryId).ToListAsync();
+        }
+
+        public async Task AddCategoryAsync(Category category)
+        {
+            await _dbContext.Categories.AddAsync(category);
+        }
+
+        public async Task DeleteCategoryAsync(int id) 
+        {
+            var category = await _dbContext.Categories.FindAsync(id);
+            if (category != null) 
+            {
+                _dbContext.Categories.Remove(category);
+            }
         }
 
         public async Task SaveAsync()

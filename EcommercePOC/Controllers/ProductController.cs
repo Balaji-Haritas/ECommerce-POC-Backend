@@ -11,15 +11,15 @@ namespace EcommercePOC.Controllers
     [Route("api/[controller]")]
     public class ProductController : ControllerBase
     {
+        //private readonly IPhotoRepository _photoRepository;
         private readonly IProductRepository _productRepository;
         private readonly AppDbContext _dbContext;
-        ///private readonly IWebHostEnvironment _environment;
 
-        public ProductController(IProductRepository productRepository, IWebHostEnvironment webHostEnvironment,AppDbContext appDbContext)
+        public ProductController( IProductRepository productRepository, AppDbContext dbContext)
         {
+            //_photoRepository = photoRepository;
             _productRepository = productRepository;
-            _dbContext = appDbContext;
-            //_environment = webHostEnvironment;
+            _dbContext = dbContext;
         }
 
         [HttpGet]
@@ -39,6 +39,7 @@ namespace EcommercePOC.Controllers
             }
             return Ok(product);
         }
+
         [HttpGet("category/{categoryName}")]
         public async Task<ActionResult<IEnumerable<Product>>> GetProductsByCategoryName(string categoryName)
         {
@@ -51,10 +52,9 @@ namespace EcommercePOC.Controllers
 
             return Ok(products);
         }
-
+        
         [HttpPost]
-
-        public async Task<ActionResult<Product>> PostProduct([FromForm]ProductDTO productDTO)
+        public async Task<ActionResult<Product>> PostProduct([FromBody] ProductDTO productDTO)
         {
             var product = new Product
             {
@@ -62,6 +62,8 @@ namespace EcommercePOC.Controllers
                 Description = productDTO.Description,
                 Price = productDTO.Price,
                 CategoryId = productDTO.CategoryId,
+                Quantity = productDTO.Quantity,
+                ImageUrl = productDTO.ImageUrl,
             };
            
 
@@ -70,6 +72,43 @@ namespace EcommercePOC.Controllers
             return CreatedAtAction(nameof(GetProducts), new { id = product.Id }, product);
         }
 
+        [HttpPut]
+        public async Task<IActionResult> UpdateProduct(int id, [FromBody] ProductDTO productDTO)
+        {
+            if (id != productDTO.Id)
+            {
+                return BadRequest("Product ID Mismatch");
+            }
+            var exisistingProduct = await _productRepository.GetProductByIdAsync(id);
+            if (exisistingProduct == null)
+            {
+                return NotFound();
+            }
+            await _productRepository.UpdateProductAsync(productDTO);
+            return Ok(exisistingProduct);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteProduct(int id)
+        {
+            await _productRepository.DeleteProductAsync(id);
+            await _productRepository.SaveAsync();
+            return NoContent();
+        }
+
+
+        //[HttpPost("add-photo")]
+        //public async Task<ActionResult> AddPhoto(IFormFile file)
+        //{
+        //    var result = await _photoRepository.AddPhotoAsync(file);
+
+        //    if (result.Error != null)
+        //    {
+        //        return BadRequest(result.Error.Message);
+        //    }
+
+        //    return Ok(result.Url); 
+        //}
 
     }
 

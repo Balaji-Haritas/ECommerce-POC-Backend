@@ -1,18 +1,15 @@
-using EcommercePOC.DataAccess;
-using EcommercePOC.Repository;
-using EcommercePOC.RepositoryInterface;
-using Microsoft.EntityFrameworkCore;
+using EcommercePOC.Extensions;
+using EcommercePOC.Helpers;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddApplication(builder.Configuration);
+builder.Services.AddIdentityService(builder.Configuration);
 
-//Adding DB Configuration
-builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("EcommerceDBConnection")));
-
-//Adding Repositories
-builder.Services.AddScoped<ICategoryRepository,CategoryRepository>();
-builder.Services.AddScoped<IProductRepository,ProductRepository>();
+//Adding Cloudinary Configuration.
+builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
 
 //Adding Cross platform connection
 builder.Services.AddCors
@@ -44,6 +41,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
