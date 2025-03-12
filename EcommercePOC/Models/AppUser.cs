@@ -16,5 +16,12 @@ namespace EcommercePOC.Models
 
         [MaxLength(10)]
         public required string PhoneNumber { get; set; }
+
+        // Foreign key for Role
+        public int RoleId { get; set; }
+
+        // Navigation property for Role
+        public Role Role { get; set; }
+
     }
 }

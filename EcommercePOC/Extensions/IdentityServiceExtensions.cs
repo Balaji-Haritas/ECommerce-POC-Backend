@@ -20,6 +20,12 @@ namespace EcommercePOC.Extensions
                 };
             });
 
+            //services.AddAuthorization(options =>
+            //{
+            //    // Add a policy to require specific roles (optional but useful for role-based authorization)
+            //    options.AddPolicy("AdminUserPolicy", policy => policy.RequireRole("Admin", "User"));
+            //});
+
             return services; 
         }
     }

@@ -11,12 +11,8 @@ namespace EcommercePOC.DataAccess
         public DbSet<Product> Products { get; set; }
 
         public DbSet<AppUser> AppUsers { get; set; }
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Category>()
-                .Property(c => c.CategoryId)
-                .ValueGeneratedOnAdd();
-        }
+
+        public DbSet<Role> Roles { get; set; }
 
     }
 }

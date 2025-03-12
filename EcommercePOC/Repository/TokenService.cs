@@ -26,8 +26,10 @@ namespace EcommercePOC.Repository
 
             var claims = new List<Claim>
             {
-                new(ClaimTypes.NameIdentifier,appUser.Name)
-            }; // holds the collection of claims , claims are the key value pairs which contains the information about the user like username, role etc, these claims are inclueded in the jwt token to validate the user is valid one or not ,claims are the information about the user used for before generating the token to validate the user 
+                new(ClaimTypes.NameIdentifier,appUser.Email),
+                new(ClaimTypes.Name,appUser.Name),
+                new(ClaimTypes.Role, appUser.Role.RoleName)
+            }; 
 
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 

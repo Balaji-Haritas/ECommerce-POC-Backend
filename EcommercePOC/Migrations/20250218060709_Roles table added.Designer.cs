@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EcommercePOC.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250210061504_Added User table")]
-    partial class AddedUsertable
+    [Migration("20250218060709_Roles table added")]
+    partial class Rolestableadded
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -53,7 +53,12 @@ namespace EcommercePOC.Migrations
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
 
                     b.ToTable("AppUsers");
                 });
@@ -111,6 +116,34 @@ namespace EcommercePOC.Migrations
                     b.ToTable("Products");
                 });
 
+            modelBuilder.Entity("EcommercePOC.Models.Role", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("RoleName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles");
+                });
+
+            modelBuilder.Entity("EcommercePOC.Models.AppUser", b =>
+                {
+                    b.HasOne("EcommercePOC.Models.Role", "Role")
+                        .WithMany("AppUsers")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+                });
+
             modelBuilder.Entity("EcommercePOC.Models.Product", b =>
                 {
                     b.HasOne("EcommercePOC.Models.Category", "Category")
@@ -120,6 +153,11 @@ namespace EcommercePOC.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("EcommercePOC.Models.Role", b =>
+                {
+                    b.Navigation("AppUsers");
                 });
 #pragma warning restore 612, 618
         }
