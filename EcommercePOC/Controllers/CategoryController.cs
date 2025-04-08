@@ -1,4 +1,5 @@
-﻿using EcommercePOC.Models;
+﻿using EcommercePOC.DTO;
+using EcommercePOC.Models;
 using EcommercePOC.RepositoryInterface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +20,7 @@ namespace EcommercePOC.Controllers
         // GET: api/Category
         //[Authorize]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
+        public async Task<ActionResult<IEnumerable<CategoryDTO>>> GetCategories()
         {
             var categories = await CategoryRepository.GetCategoriesAsync();
             return Ok(categories);

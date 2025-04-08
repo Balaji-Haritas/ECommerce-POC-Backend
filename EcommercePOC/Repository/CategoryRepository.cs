@@ -1,4 +1,5 @@
 ﻿using EcommercePOC.DataAccess;
+using EcommercePOC.DTO;
 using EcommercePOC.Models;
 using EcommercePOC.RepositoryInterface;
 using Microsoft.AspNetCore.Mvc;
@@ -16,9 +17,15 @@ namespace EcommercePOC.Repository
         }
 
 
-        public async Task<IEnumerable<Category>> GetCategoriesAsync()
+        public async Task<IEnumerable<CategoryDTO>> GetCategoriesAsync()
         {
-           return await _dbContext.Categories.ToListAsync();
+            return await _dbContext.Categories
+                .Select(c => new CategoryDTO
+                {
+                CategoryId = c.CategoryId,
+                CategoryName = c.CategoryName
+                })
+                .ToListAsync();
         }
 
         public async Task<Category> GetCategoryByIdAsync(int id)

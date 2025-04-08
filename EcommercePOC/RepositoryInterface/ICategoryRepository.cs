@@ -1,10 +1,11 @@
-﻿using EcommercePOC.Models;
+﻿using EcommercePOC.DTO;
+using EcommercePOC.Models;
 
 namespace EcommercePOC.RepositoryInterface
 {
     public interface ICategoryRepository
     {
-        Task<IEnumerable<Category>> GetCategoriesAsync();
+        Task<IEnumerable<CategoryDTO>> GetCategoriesAsync();
 
         Task<Category> GetCategoryByIdAsync(int id);
 
